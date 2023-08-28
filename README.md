@@ -111,7 +111,10 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 Big shout-out to some people who really inspired me to lean web development. They are the reason why I joined frontendmentor to get better in coding and have a fun time doing so.
 
-<span style="color:red">♥</span> [Brad Traversy](https://www.youtube.com/c/TraversyMedia)
-<span style="color:red">♥</span> [Jonas Schmedtmann](https://codingheroes.io/)
-<span style="color:red">♥</span> [Kevin Powell](https://www.youtube.com/kepowob)
-<span style="color:red">♥</span> [Jessica Chan](https://www.youtube.com/c/TheCoderCoder)
+❤️ [Brad Traversy](https://www.youtube.com/c/TraversyMedia)
+
+❤️ [Jonas Schmedtmann](https://codingheroes.io/)
+
+❤️ [Kevin Powell](https://www.youtube.com/kepowob)
+
+❤️ [Jessica Chan](https://www.youtube.com/c/TheCoderCoder)
