@@ -1,0 +1,90 @@
+@use "sass:math";
+
+// Strip units from number
+@function s($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return d($number, ($number * 0 + 1));
+  }
+  @return $number;
+}
+// Round numbers
+@function r($value, $digits: 1) {
+  $unit: unit($value);
+  $multiply: p(10, $digits);
+  $result: d(round(s($value) * $multiply), $multiply);
+  @if ($unit) {
+    $result: $result + #{$unit};
+  }
+  @return $result;
+}
+// Devide numbers
+@function d($value, $div: 2) {
+  @return math.div($value, $div);
+}
+// Power of base
+@function p($base, $component: 0) {
+  @return math.pow($base, $component);
+}
+// Number devide by 2
+@function h($value) {
+  @return d($value, 2);
+}
+// Negative number
+@function n($value) {
+  @return #{0 - $value};
+}
+// Comvert rems to PX
+@function toPX($rems, $px-base: 16) {
+  $r: r(s($rems) * $px-base, 0);
+  @return $r + px;
+}
+//Convert PX to rems
+@function toREM($px, $px-base: 16) {
+  $r: r(d(s($px), $px-base), 3);
+  @return $r + rem;
+}
+// Creates a simple var with root css custom properties and fallback if needed
+@function v($property: "", $fallback: "") {
+  @if ($fallback == "") {
+    @return var(--#{$property});
+  }
+  @return var(--#{$property}, $fallback);
+}
+// Creates darker version of color by adding black
+@function shade($color, $percentage) {
+  @return adjust-color($color, $blackness: $percentage);
+}
+// Creates lighter version of color by adding white
+@function tint($color, $percentage) {
+  @return adjust-color($color, $whiteness: $percentage);
+}
+// Replace text
+@function str-replace($string, $search, $replace: "") {
+  $string: #{$string};
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
+}
+// Calculate ideal line height
+@function line-height($font-size: 16px, $line-height: 24px, $rem2px: 16) {
+  $unit-fs: unit($font-size);
+  $unit-lh: unit($line-height);
+  $fs: s($font-size);
+  $lh: s($line-height);
+  @if ($unit-fs == "rem") {
+    $fs: $fs * $rem2px;
+  }
+  @if ($unit-lh == "rem") {
+    $lh: $lh * $rem2px;
+  }
+  @return r(math.div($lh, $fs), 3);
+}

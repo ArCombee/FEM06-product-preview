@@ -1,0 +1,93 @@
+@use "sass:math";
+@use "breakpoints" as bp;
+@use "functions" as func;
+
+@mixin mq($key) {
+  $size: map-get(bp.$breakpoints, $key);
+
+  @if not($size) {
+    @warn "Breakpoint " + #{$key} + " not found!";
+  } @else {
+    @media only screen and (min-width: $size) {
+      @content;
+    }
+  }
+}
+@mixin mqu($key) {
+  $size: map-get(bp.$breakpoints, $key);
+  @if not($size) {
+    @warn "Breakpoint " + #{$key} + " not found!";
+  } @else {
+    $size: calc($size - 0.1px);
+    @media only screen and (max-width: $size) {
+      @content;
+    }
+  }
+}
+@mixin inline-mq($property, $default, $arugments...) {
+  #{$property}: #{$default};
+  @each $breakpoint, $value in $arugments {
+    @media only screen and (max-width: #{$breakpoint}) {
+      #{$property}: #{$value};
+    }
+  }
+}
+@mixin square($width: 20px, $height: $width, $radius: null) {
+  width: $width;
+  height: $height;
+  @if not($radius == null) {
+    border-radius: $radius;
+  }
+}
+@mixin space($mp: p, $side: x, $value: 16px) {
+  $sides: (
+    type: (
+      "m": margin,
+      "p": padding,
+    ),
+    subtype: (
+      "t": top,
+      "b": bottom,
+      "l": left,
+      "r": right,
+      "x": (
+        left,
+        right,
+      ),
+      "y": (
+        top,
+        bottom,
+      ),
+      "a": "",
+    ),
+  );
+  $number: func.s($value);
+  $unit: unit($value);
+  $type: map-get(map-get($sides, type), $mp);
+  $subtypes: map-get(map-get($sides, subtype), $side);
+  $r: var(--space-px-#{$number}, $value);
+  @if ($subtypes == "") {
+    #{$type}: $r;
+  } @else {
+    @each $k in $subtypes {
+      #{$type}-#{$k}: $r;
+    }
+  }
+}
+@mixin headings($nr: 3) {
+  @if ($nr >0 and $nr <7) {
+    $r: "";
+    @for $i from 1 to ($nr + 1) {
+      @if ($i == ($nr + 1)) {
+        $r: $r + h#{$i};
+      } @else {
+        $r: $r + h#{$i} + ", ";
+      }
+    }
+    #{$r} {
+      @content;
+    }
+  } @else {
+    @warn "Heading 1-6!";
+  }
+}

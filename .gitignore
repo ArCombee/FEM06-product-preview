@@ -1,0 +1,26 @@
+# ---------------------
+# PATHS
+# ---------------------
+node_modules/
+.vscode/
+public/
+_fem*/
+
+
+# ---------------------
+# FILES 
+# ---------------------
+*.zip
+.*7z
+.DS_Store
+.prettierignore
+Thumbs.db
+package-lock.json
+
+# ---------------------
+# FRONTENDMENTOR
+# ---------------------
+*.sketch
+*.fig
+*.xd
+*.psd

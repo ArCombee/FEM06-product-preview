@@ -1,0 +1,25 @@
+@use "sass:map";
+@use "../utilities/tokenConfig" as *;
+:root {
+  @each $token, $config in $tokenGenerator {
+    @each $scheme, $items in $config {
+      $tokens: map-get($items, "tokens");
+      $values: map-get($items, "values");
+      $root: map-get($items, "root");
+      $create: map-get($items, "create");
+      @if $create ==true {
+        @each $prefix, $properties in $tokens {
+          @each $key, $val in $values {
+            @if $root == true {
+              @if $scheme == "default" {
+                --#{$prefix}-#{$key}: #{$val};
+              } @else {
+                --#{$prefix}-#{$scheme}-#{$key}: #{$val};
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
