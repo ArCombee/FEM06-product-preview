@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "tokenConfig" as *;
+@use "../abstracts/tokenConfig" as *;
 
 @each $token, $config in $tokenGenerator {
   @each $scheme, $items in $config {

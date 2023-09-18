@@ -1,15 +1,17 @@
-// Global Style
-@use "globals";
+// Global Styles
+@use "global";
 
-// Compositions
-@use "compositions";
+// Structure Styles
+@use "structure";
 
-// Utilities
+// Component Styles
+@use "component";
+
+// Page Styles
+@use "page";
+
+// Utility Styles
 @use "utilities";
 
-// Blocks
-@use "blocks";
-
-// Exception
-
-// Vendors
+// Vendor Styles
+@use "vendor";
