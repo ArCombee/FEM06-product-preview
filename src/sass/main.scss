@@ -1,15 +1,15 @@
 // Global Style
-@use "globals/root";
-@use "globals/reset";
-@use "globals/base";
+@use "globals";
 
 // Compositions
-@use "compositions/flow";
+@use "compositions";
 
 // Utilities
-@use "utilities/generator";
+@use "utilities";
 
 // Blocks
-@use "blocks/fem";
+@use "blocks";
 
 // Exception
+
+// Vendors
