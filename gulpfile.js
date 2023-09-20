@@ -16,10 +16,10 @@ const server = browserSync.create();
 // HTML
 import htmlmin from "gulp-htmlmin";
 // IMAGES
-import imagemin from "gulp-imagemin";
+import imagemin, { gifsicle, mozjpeg, optipng, svgo } from "gulp-imagemin";
 import newer from "gulp-newer";
 // SVG
-import svgo from "gulp-svgo";
+import gsvgo from "gulp-svgo";
 // SASS CSS
 import gulpsass from "gulp-sass";
 import dartsass from "sass";
@@ -33,13 +33,14 @@ import csspurge from "gulp-purgecss";
 // JAVASCRIPT
 import babel from "gulp-babel";
 import terser from "gulp-terser";
+// import imageminWebp from "imagemin-webp";
 
 // FUNCTIONS
 function processSVG() {
   return gulp
     .src("src/images/*.svg")
     .pipe(
-      svgo({
+      gsvgo({
         plugins: [
           {
             cleanupAttrs: true,
@@ -155,7 +156,27 @@ function processIMG() {
   return gulp
     .src("src/images/**/*")
     .pipe(newer("public/assets/images"))
-    .pipe(mode.production(imagemin()))
+    .pipe(
+      mode.production(
+        imagemin([
+          gifsicle({ interlaced: true }),
+          mozjpeg({ quality: 80, progressive: true }),
+          optipng({ optimizationLevel: 5 }),
+          svgo({
+            plugins: [
+              {
+                name: "removeViewBox",
+                active: true,
+              },
+              {
+                name: "cleanupIDs",
+                active: false,
+              },
+            ],
+          }),
+        ])
+      )
+    )
     .pipe(gulp.dest("public/assets/images"));
 }
 function clearPublic(cb) {
