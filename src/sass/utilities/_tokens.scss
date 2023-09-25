@@ -1,0 +1,43 @@
+@use "../00_abstract/mixins" as *;
+
+$colorMap: (
+  primary: #66bb6a,
+);
+$fontMap: (
+  base: 1rem,
+);
+$fontWeight: (
+  base: 300,
+);
+$typeMap: (
+  heading: (
+    font-size: 1rem,
+    font-weight: 400,
+    line-height: 1.1,
+  ),
+);
+$spaceMap: (
+  base: 16px,
+);
+$typeScale: "";
+.fs {
+  @include token($fontMap, "font-size", "--fs");
+}
+.fw {
+  @include token($fontWeight, "font-weight", "--fw");
+}
+.text {
+  @include token($colorMap, "color", "--clr");
+}
+.bg {
+  @include token($colorMap, "background-color", "--clr");
+}
+.m {
+  @include token_spacing($spaceMap);
+}
+.p {
+  @include token_spacing($spaceMap, "padding");
+}
+.type {
+  @include token_type($typeMap);
+}

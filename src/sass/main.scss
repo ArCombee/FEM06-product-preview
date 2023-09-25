@@ -1,17 +1,25 @@
-// Global Styles
-@use "global";
+@use "sass:meta";
+@layer vendor, global, structure, component, page, theme, utilities, overrides;
 
-// Structure Styles
-@use "structure";
-
-// Component Styles
-@use "component";
-
-// Page Styles
-@use "page";
-
-// Utility Styles
-@use "utilities";
-
-// Vendor Styles
-@use "vendor";
+@layer global {
+  @include meta.load-css("./gobal/index");
+}
+@layer structure {
+  @include meta.load-css("./structure/index");
+}
+@layer component {
+  @include meta.load-css("./component/index");
+}
+@layer page {
+  @include meta.load-css("./page/index");
+}
+@layer theme {
+  @include meta.load-css("./theme/index");
+}
+@layer utilities {
+  @include meta.load-css("./utilities/index");
+}
+@layer vendor {
+}
+@layer overrides {
+}

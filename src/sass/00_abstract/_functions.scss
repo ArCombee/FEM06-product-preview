@@ -1,55 +1,52 @@
 @use "sass:math";
 
+// Get Unit of a value
+@function get-unit($value) {
+  @return str-slice($value * 0 + "", 2, -1);
+}
+@function set-unit($value, $unit: rem) {
+  $v: strip-unit($value);
+  @debug $v;
+  // @return strip-unit($value) * 1#{$unit};
+}
 // Strip units from number
-@function s($number) {
+@function strip-unit($number) {
   @if type-of($number) == "number" and not unitless($number) {
-    @return d($number, ($number * 0 + 1));
+    @return math.div($number, ($number * 0 + 1));
   }
   @return $number;
 }
 // Round numbers
-@function r($value, $digits: 1) {
+@function round($value, $digits: 1) {
   $unit: unit($value);
-  $multiply: p(10, $digits);
-  $result: d(round(s($value) * $multiply), $multiply);
-  @if ($unit) {
+  $multiply: math.pow(10, $digits);
+  $result: math.div(math.round(strip-unit($value) * $multiply), $multiply);
+  @if ($unit != "") {
     $result: $result + #{$unit};
   }
   @return $result;
 }
-// Devide numbers
-@function d($value, $div: 2) {
-  @return math.div($value, $div);
-}
-// Power of base
-@function p($base, $component: 0) {
-  @return math.pow($base, $component);
-}
 // Number devide by 2
-@function h($value) {
-  @return d($value, 2);
+@function half($value) {
+  @return math.div($value, 2);
 }
 // Negative number
-@function n($value) {
+@function neg($value) {
   @return #{0 - $value};
 }
 // Comvert rems to PX
-@function toPX($rems, $px-base: 16) {
-  $r: r(s($rems) * $px-base, 0);
-  @return $r + px;
+@function to-px($rem, $digits: 2, $px-base: 16) {
+  $value: strip-unit($rem) * strip-unit($px-base);
+  $value: round($value, $digits);
+  @return $value * 1px;
 }
-//Convert PX to rems
-@function toREM($px, $px-base: 16) {
-  $r: r(d(s($px), $px-base), 3);
-  @return $r + rem;
+//Convert px to rem
+@function to-rem($px, $digits: 2, $px-base: 16) {
+  $value: math.div(strip-unit($px), strip-unit($px-base));
+  $value: round($value, $digits);
+  @return $value * 1rem;
 }
-// Creates a simple var with root css custom properties and fallback if needed
-@function v($property: "", $fallback: "") {
-  @if ($fallback == "") {
-    @return var(--#{$property});
-  }
-  @return var(--#{$property}, $fallback);
-}
+
 // Creates darker version of color by adding black
 @function shade($color, $percentage) {
   @return adjust-color($color, $blackness: $percentage);
@@ -78,8 +75,8 @@
 @function line-height($font-size: 16px, $line-height: 24px, $rem2px: 16) {
   $unit-fs: unit($font-size);
   $unit-lh: unit($line-height);
-  $fs: s($font-size);
-  $lh: s($line-height);
+  $fs: strip-unit($font-size);
+  $lh: strip-unit($line-height);
   @if ($unit-fs == "rem") {
     $fs: $fs * $rem2px;
   }

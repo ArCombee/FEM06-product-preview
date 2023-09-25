@@ -91,3 +91,59 @@
     @warn "Heading 1-6!";
   }
 }
+// Utility token generators
+@mixin token($map, $property: "font-size", $root: "--fs") {
+  @each $key, $value in $map {
+    &-#{$key} {
+      #{$property}: var(#{$root}-#{$key}, #{$value});
+    }
+  }
+}
+@mixin token_spacing($map, $property: "margin", $prefix: "-") {
+  @if ($property == "margin") {
+    &-a {
+      #{$property}-inline: auto;
+    }
+    &l-a {
+      #{$property}-inline-start: auto;
+    }
+    &r-a {
+      #{$property}-inline-end: auto;
+    }
+  }
+  @each $key, $value in $map {
+    @if (unit($value) == "px") {
+      $value: func.to-rem($value);
+    }
+    &#{$prefix}#{$key} {
+      #{$property}: $value;
+    }
+    &t#{$prefix}#{$key} {
+      #{$property}-block-start: $value;
+    }
+    &b#{$prefix}#{$key} {
+      #{$property}-block-end: $value;
+    }
+    &l#{$prefix}#{$key} {
+      #{$property}-inline-start: $value;
+    }
+    &r#{$prefix}#{$key} {
+      #{$property}-inline-end: $value;
+    }
+    &x#{$prefix}#{$key} {
+      #{$property}-inline: $value;
+    }
+    &y#{$prefix}#{$key} {
+      #{$property}-block: $value;
+    }
+  }
+}
+@mixin token_type($map, $root: "-type") {
+  @each $type, $config in $map {
+    &-#{$type} {
+      @each $key, $value in $config {
+        #{$key}: #{$value};
+      }
+    }
+  }
+}
