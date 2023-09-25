@@ -22,7 +22,8 @@ import newer from "gulp-newer";
 import gsvgo from "gulp-svgo";
 // SASS CSS
 import gulpsass from "gulp-sass";
-import dartsass from "sass";
+// import dartsass from "sass";
+import * as dartsass from "sass";
 const sass = gulpsass(dartsass);
 import autoprefixer from "autoprefixer";
 import postcss from "gulp-postcss";
