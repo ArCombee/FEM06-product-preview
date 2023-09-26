@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "sass:string";
 @use "breakpoints" as bp;
 @use "functions" as func;
 
@@ -39,75 +40,38 @@
     border-radius: $radius;
   }
 }
-@mixin space($mp: p, $side: x, $value: 16px) {
-  $sides: (
-    type: (
-      "m": margin,
-      "p": padding,
-    ),
-    subtype: (
-      "t": top,
-      "b": bottom,
-      "l": left,
-      "r": right,
-      "x": (
-        left,
-        right,
-      ),
-      "y": (
-        top,
-        bottom,
-      ),
-      "a": "",
-    ),
-  );
-  $number: func.s($value);
-  $unit: unit($value);
-  $type: map-get(map-get($sides, type), $mp);
-  $subtypes: map-get(map-get($sides, subtype), $side);
-  $r: var(--space-px-#{$number}, $value);
-  @if ($subtypes == "") {
-    #{$type}: $r;
-  } @else {
-    @each $k in $subtypes {
-      #{$type}-#{$k}: $r;
-    }
-  }
-}
-@mixin headings($nr: 3) {
-  @if ($nr >0 and $nr <7) {
-    $r: "";
-    @for $i from 1 to ($nr + 1) {
-      @if ($i == ($nr + 1)) {
-        $r: $r + h#{$i};
-      } @else {
-        $r: $r + h#{$i} + ", ";
-      }
-    }
-    #{$r} {
-      @content;
-    }
-  } @else {
-    @warn "Heading 1-6!";
-  }
-}
+
 // Utility token generators
-@mixin token($map, $property: "font-size", $root: "--fs") {
+@mixin token($map, $property: "font-size", $root: "--fs", $outputRoot: false) {
   @each $key, $value in $map {
-    &-#{$key} {
-      #{$property}: var(#{$root}-#{$key}, #{$value});
+    @if ($outputRoot == false) {
+      &-#{$key} {
+        #{$property}: var(#{$root}-#{$key}, #{$value});
+      }
+    } @else {
+      #{$root}-#{$key}: #{$value};
+    }
+  }
+}
+
+@mixin token_style($map, $root: "-type") {
+  @each $type, $config in $map {
+    &-#{$type} {
+      @each $key, $value in $config {
+        #{$key}: #{$value};
+      }
     }
   }
 }
 @mixin token_spacing($map, $property: "margin", $prefix: "-") {
   @if ($property == "margin") {
-    &-a {
+    &a {
       #{$property}-inline: auto;
     }
-    &l-a {
+    &a-l {
       #{$property}-inline-start: auto;
     }
-    &r-a {
+    &a-r {
       #{$property}-inline-end: auto;
     }
   }
@@ -115,7 +79,7 @@
     @if (unit($value) == "px") {
       $value: func.to-rem($value);
     }
-    &#{$prefix}#{$key} {
+    &a#{$prefix}#{$key} {
       #{$property}: $value;
     }
     &t#{$prefix}#{$key} {
@@ -138,12 +102,28 @@
     }
   }
 }
-@mixin token_type($map, $root: "-type") {
-  @each $type, $config in $map {
-    &-#{$type} {
-      @each $key, $value in $config {
-        #{$key}: #{$value};
+@mixin token_flow(
+  $map,
+  $property: "margin",
+  $root: "--flow-space",
+  $outputRoot: false
+) {
+  $options: (
+    x: (
+      left,
+      right,
+    ),
+  );
+  @each $key, $value in $map {
+    @if ($outputRoot == false) {
+      &-#{$key}-x > * + * {
+        #{$property}-inline-start: var(#{$root}-#{$key}, #{$value});
       }
+      &-#{$key}-y > * + * {
+        #{$property}-block-start: var(#{$root}-#{$key}, #{$value});
+      }
+    } @else {
+      #{$root}-#{$key}: #{$value};
     }
   }
 }

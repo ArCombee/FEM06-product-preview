@@ -30,10 +30,10 @@
 @function half($value) {
   @return math.div($value, 2);
 }
-// Negative number
 @function neg($value) {
-  @return #{0 - $value};
+  @return $value * -1;
 }
+
 // Comvert rems to PX
 @function to-px($rem, $digits: 2, $px-base: 16) {
   $value: strip-unit($rem) * strip-unit($px-base);

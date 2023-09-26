@@ -1,0 +1,25 @@
+.text-left {
+  &-left {
+    text-align: start;
+  }
+  &-right {
+    text-align: end;
+  }
+  &-center {
+    text-align: center;
+  }
+  &-upper {
+    text-transform: uppercase;
+  }
+  &-lower {
+    text-transform: lowercase;
+  }
+  &-title {
+    text-transform: capitalize;
+  }
+  &-deco {
+    &-none {
+      text-decoration: none;
+    }
+  }
+}

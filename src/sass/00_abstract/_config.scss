@@ -1,0 +1,33 @@
+$colorMap: (
+  primary: #66bb6a,
+);
+$spaceMap: (
+  1: 16px,
+);
+$fontFamily: (
+  h: '"Arial, Helvetica, sans-serif"',
+);
+$fontWeight: (
+  base: 300,
+);
+$fontSize: (
+  base: 1rem,
+);
+$lineHeightMap: (
+  heading: 1.1,
+  normal: 1.5,
+);
+$styleMap: (
+  heading: (
+    font-size: 1rem,
+    font-weight: 400,
+    line-height: 1.1,
+  ),
+);
+$flowMap: (
+  normal: 5rem,
+);
+$radiusMap: (
+  normal: 5px,
+  circle: 50%,
+);

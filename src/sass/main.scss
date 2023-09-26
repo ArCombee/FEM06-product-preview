@@ -1,5 +1,9 @@
 @use "sass:meta";
-@layer vendor, global, structure, component, page, theme, utilities, overrides;
+@layer vendor,root, global, structure, component, page, theme, utilities, overrides;
+
+@layer root {
+  @include meta.load-css("./gobal/root");
+}
 
 @layer global {
   @include meta.load-css("./gobal/index");

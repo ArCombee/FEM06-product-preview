@@ -1,0 +1,18 @@
+@use "../00_abstract/mixins" as *;
+@use "../00_abstract/config" as *;
+
+.fs {
+  @include token($fontSize, "font-size", "--fs");
+}
+.fw {
+  @include token($fontWeight, "font-weight", "--fw");
+}
+.ff {
+  @include token($fontFamily, "font-family", "--ff");
+}
+.lh {
+  @include token($lineHeightMap, "line-height", "--lh");
+}
+.style {
+  @include token_style($styleMap);
+}
