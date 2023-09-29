@@ -1,129 +1,24 @@
 @use "sass:math";
 @use "sass:string";
-@use "breakpoints" as bp;
-@use "functions" as func;
 
-@mixin mq($key) {
-  $size: map-get(bp.$breakpoints, $key);
-
-  @if not($size) {
-    @warn "Breakpoint " + #{$key} + " not found!";
-  } @else {
-    @media only screen and (min-width: $size) {
-      @content;
-    }
-  }
-}
-@mixin mqu($key) {
-  $size: map-get(bp.$breakpoints, $key);
-  @if not($size) {
-    @warn "Breakpoint " + #{$key} + " not found!";
-  } @else {
-    $size: calc($size - 0.1px);
-    @media only screen and (max-width: $size) {
-      @content;
-    }
-  }
-}
-@mixin inline-mq($property, $default, $arugments...) {
-  #{$property}: #{$default};
-  @each $breakpoint, $value in $arugments {
-    @media only screen and (max-width: #{$breakpoint}) {
-      #{$property}: #{$value};
-    }
-  }
-}
-@mixin square($width: 20px, $height: $width, $radius: null) {
-  width: $width;
-  height: $height;
-  @if not($radius == null) {
-    border-radius: $radius;
-  }
-}
-
-// Utility token generators
-@mixin token($map, $property: "font-size", $root: "--fs", $outputRoot: false) {
-  @each $key, $value in $map {
-    @if ($outputRoot == false) {
-      &-#{$key} {
-        #{$property}: var(#{$root}-#{$key}, #{$value});
+@mixin process-utility-map($map, $properties, $css-var: "") {
+  $items: map-get($map, "items");
+  $label: "";
+  @each $item, $rule-set in $items {
+    @each $rule, $value in $rule-set {
+      @if ($item != "normal") {
+        $label: "-" + #{$item};
       }
-    } @else {
-      #{$root}-#{$key}: #{$value};
-    }
-  }
-}
-
-@mixin token_style($map, $root: "-type") {
-  @each $type, $config in $map {
-    &-#{$type} {
-      @each $key, $value in $config {
-        #{$key}: #{$value};
+      &#{$label}-#{$rule} {
+        @each $property in $properties {
+          @if ($css-var == "") {
+            #{$property}: #{$value};
+          } @else {
+            #{$property}: var(#{$css-var}#{$label}-#{$rule}, #{$value});
+          }
+        }
       }
-    }
-  }
-}
-@mixin token_spacing($map, $property: "margin", $prefix: "-") {
-  @if ($property == "margin") {
-    &a {
-      #{$property}-inline: auto;
-    }
-    &a-l {
-      #{$property}-inline-start: auto;
-    }
-    &a-r {
-      #{$property}-inline-end: auto;
-    }
-  }
-  @each $key, $value in $map {
-    @if (unit($value) == "px") {
-      $value: func.to-rem($value);
-    }
-    &a#{$prefix}#{$key} {
-      #{$property}: $value;
-    }
-    &t#{$prefix}#{$key} {
-      #{$property}-block-start: $value;
-    }
-    &b#{$prefix}#{$key} {
-      #{$property}-block-end: $value;
-    }
-    &l#{$prefix}#{$key} {
-      #{$property}-inline-start: $value;
-    }
-    &r#{$prefix}#{$key} {
-      #{$property}-inline-end: $value;
-    }
-    &x#{$prefix}#{$key} {
-      #{$property}-inline: $value;
-    }
-    &y#{$prefix}#{$key} {
-      #{$property}-block: $value;
-    }
-  }
-}
-@mixin token_flow(
-  $map,
-  $property: "margin",
-  $root: "--flow-space",
-  $outputRoot: false
-) {
-  $options: (
-    x: (
-      left,
-      right,
-    ),
-  );
-  @each $key, $value in $map {
-    @if ($outputRoot == false) {
-      &-#{$key}-x > * + * {
-        #{$property}-inline-start: var(#{$root}-#{$key}, #{$value});
-      }
-      &-#{$key}-y > * + * {
-        #{$property}-block-start: var(#{$root}-#{$key}, #{$value});
-      }
-    } @else {
-      #{$root}-#{$key}: #{$value};
+      $label: "";
     }
   }
 }

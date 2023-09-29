@@ -35,16 +35,36 @@
 }
 
 // Comvert rems to PX
-@function to-px($rem, $digits: 2, $px-base: 16) {
+@function rem-to-px($rem, $digits: 2, $px-base: 16) {
   $value: strip-unit($rem) * strip-unit($px-base);
   $value: round($value, $digits);
   @return $value * 1px;
 }
 //Convert px to rem
-@function to-rem($px, $digits: 2, $px-base: 16) {
+@function px-to-rem($px, $digits: 2, $px-base: 16) {
   $value: math.div(strip-unit($px), strip-unit($px-base));
   $value: round($value, $digits);
   @return $value * 1rem;
+}
+@function em($value, $digits: 2, $px-base: 16) {
+  @if (type-of($value) == "number") {
+    $unit: unit($value);
+    @if ($unit == "em" or unitless($value)) {
+      @return $value;
+    } @else {
+      @if ($unit == "rem") {
+        $value: rem-to-px($value);
+      } @else if ($unit != "px") {
+        @error "Only REM and PX value allowed: #{$unit}";
+      }
+    }
+    $value: strip-unit($value);
+    $em: math.div($value, $px-base);
+    @return $em * 1em;
+  } @else {
+    @error "Value " + #{$value} + " not a number";
+    @return null;
+  }
 }
 
 // Creates darker version of color by adding black
@@ -84,4 +104,13 @@
     $lh: $lh * $rem2px;
   }
   @return r(math.div($lh, $fs), 3);
+}
+@function generate-font-sizes($ratio, $number, $prefix: "") {
+  $font-size: ();
+  @for $i from ($number * -1) through $number {
+    $fs: math.pow($ratio, $i) * 1rem;
+    $fs: f.round($fs, 2);
+    $font-size: map.set($font-size, $prefix + $i, $fs);
+  }
+  @return $font-size;
 }

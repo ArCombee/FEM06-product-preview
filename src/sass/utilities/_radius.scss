@@ -1,6 +1,0 @@
-@use "../00_abstract/mixins" as *;
-@use "../00_abstract/config" as *;
-
-.radius {
-  @include token($radiusMap, "border-radius", "--radius");
-}

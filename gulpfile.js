@@ -22,13 +22,13 @@ import newer from "gulp-newer";
 import gsvgo from "gulp-svgo";
 // SASS CSS
 import gulpsass from "gulp-sass";
-// import dartsass from "sass";
 import * as dartsass from "sass";
 const sass = gulpsass(dartsass);
 import autoprefixer from "autoprefixer";
 import postcss from "gulp-postcss";
 import cssnano from "cssnano";
 import csscmq from "postcss-combine-media-query";
+import csscmq2 from "postcss-sort-media-queries";
 import csssort from "css-declaration-sorter";
 import csspurge from "gulp-purgecss";
 // JAVASCRIPT
@@ -201,7 +201,7 @@ function processSASS(cb) {
     .pipe(
       mode.production(
         postcss([
-          csscmq,
+          // csscmq2(),
           cssnano({
             preset: ["default"],
           }),

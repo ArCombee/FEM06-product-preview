@@ -1,9 +1,0 @@
-@use "../00_abstract/mixins" as *;
-@use "../00_abstract/config" as *;
-
-.m {
-  @include token_spacing($spaceMap);
-}
-.p {
-  @include token_spacing($spaceMap, "padding");
-}

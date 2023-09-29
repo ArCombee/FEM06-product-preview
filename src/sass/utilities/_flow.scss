@@ -1,6 +1,0 @@
-@use "../00_abstract/mixins" as *;
-@use "../00_abstract/config" as *;
-
-.flow {
-  @include token_flow($flowMap, "margin", "--flow-space");
-}
