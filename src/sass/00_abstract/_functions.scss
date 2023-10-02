@@ -1,21 +1,15 @@
 @use "sass:math";
+@use "sass:list";
 
-// Get Unit of a value
-@function get-unit($value) {
-  @return str-slice($value * 0 + "", 2, -1);
-}
-@function set-unit($value, $unit: rem) {
-  $v: strip-unit($value);
-  @debug $v;
-  // @return strip-unit($value) * 1#{$unit};
-}
-// Strip units from number
+//https://css-tricks.com/snippets/sass/strip-unit-function/
 @function strip-unit($number) {
   @if type-of($number) == "number" and not unitless($number) {
-    @return math.div($number, ($number * 0 + 1));
+    @return $number / ($number * 0 + 1);
   }
+
   @return $number;
 }
+
 // Round numbers
 @function round($value, $digits: 1) {
   $unit: unit($value);
@@ -34,7 +28,7 @@
   @return $value * -1;
 }
 
-// Comvert rems to PX
+// Convert rems to PX
 @function rem-to-px($rem, $digits: 2, $px-base: 16) {
   $value: strip-unit($rem) * strip-unit($px-base);
   $value: round($value, $digits);
@@ -46,27 +40,6 @@
   $value: round($value, $digits);
   @return $value * 1rem;
 }
-@function em($value, $digits: 2, $px-base: 16) {
-  @if (type-of($value) == "number") {
-    $unit: unit($value);
-    @if ($unit == "em" or unitless($value)) {
-      @return $value;
-    } @else {
-      @if ($unit == "rem") {
-        $value: rem-to-px($value);
-      } @else if ($unit != "px") {
-        @error "Only REM and PX value allowed: #{$unit}";
-      }
-    }
-    $value: strip-unit($value);
-    $em: math.div($value, $px-base);
-    @return $em * 1em;
-  } @else {
-    @error "Value " + #{$value} + " not a number";
-    @return null;
-  }
-}
-
 // Creates darker version of color by adding black
 @function shade($color, $percentage) {
   @return adjust-color($color, $blackness: $percentage);
@@ -113,4 +86,43 @@
     $font-size: map.set($font-size, $prefix + $i, $fs);
   }
   @return $font-size;
+}
+@function fluid(
+  $min-size,
+  $max-size,
+  $ms: 1,
+  $ratio-min: 1.25,
+  $ratio-max: 1.25,
+  $min-breakpoint: 320px,
+  $max-breakpoint: 1240px,
+  $unit: vw
+) {
+  $min-size: math.pow($ratio-min, $ms) * $min-size;
+  $max-size: math.pow($ratio-max, $ms) * $max-size;
+  $slope: math.div($max-size - $min-size, $max-breakpoint - $min-breakpoint);
+  $slope-to-unit: round($slope * 100, 4);
+  $intercept-rem: round(px-to-rem($min-size - $slope * $min-breakpoint), 4);
+  $min-size-rem: round(px-to-rem($min-size), 4);
+  $max-size-rem: round(px-to-rem($max-size), 4);
+  @return clamp(
+    #{$min-size-rem},
+    #{$intercept-rem} + #{$slope-to-unit}#{$unit},
+    #{$max-size-rem}
+  );
+}
+@function create-scale($ratio: 1.25, $start: -3, $end: 5) {
+  $scale: "";
+  @for $i from $start through $end {
+    $value: round(math.pow($ratio, $i), 3);
+    @if ($scale == "") {
+      $scale: $value;
+    } @else {
+      $scale: list.append($scale, $value, comma);
+    }
+  }
+  @return $scale;
+}
+
+@function get-config-item($config, $item, $rule) {
+  @return map-get(map-get($config, $item), $rule);
 }

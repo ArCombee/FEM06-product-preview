@@ -1,30 +1,17 @@
 @use "sass:meta";
-@use "00_abstract/mixins" as *;
+@use "./00_abstract/" as *;
 
-@layer vendor,root, global, structure, component, page, theme, utilities, overrides;
+@layer global, composition, block, utility;
 
-@layer root {
-  //   @include meta.load-css("./gobal/root");
-}
 @layer global {
-  // @include meta.load-css("./gobal/index");
+  @include meta.load-css("./gobal/");
 }
-@layer structure {
-  // @include meta.load-css("./structure/index");
+@layer composition {
+  @include meta.load-css("./composition/");
 }
-@layer component {
-  // @include meta.load-css("./component/index");
+@layer block {
+  @include meta.load-css("./block/");
 }
-@layer page {
-  // @include meta.load-css("./page/index");
-}
-@layer theme {
-  // @include meta.load-css("./theme/index");
-}
-@layer utilities {
-  @include meta.load-css("./utilities/index");
-}
-@layer vendor {
-}
-@layer overrides {
+@layer utility {
+  @include meta.load-css("./utility/");
 }
