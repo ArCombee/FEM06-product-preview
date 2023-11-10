@@ -30,8 +30,8 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
     "autoprefixer": "^10.4.16",
     "browser-sync": "^2.29.3",
     "css-declaration-sorter": "^7.1.1",

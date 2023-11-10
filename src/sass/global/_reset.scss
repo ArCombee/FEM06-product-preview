@@ -1,0 +1,62 @@
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+html {
+  line-height: 1.5;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+}
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1;
+}
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+}
+a {
+  background-color: transparent;
+}
+b,
+strong {
+  font-weight: bolder;
+}
+main {
+  display: block;
+}
+img,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-style: none;
+}
+button {
+  border: 0;
+  outline: 0;
+}
+input,
+button,
+textarea,
+optgroup,
+select {
+  font: inherit;
+  margin: 0;
+}

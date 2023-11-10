@@ -1,10 +1,10 @@
 @use "sass:meta";
 @use "./00_abstract/" as *;
 
-@layer global, composition, block, utility;
+@layer global, composition, block, utility, overrides;
 
 @layer global {
-  @include meta.load-css("./gobal/");
+  @include meta.load-css("./global/");
 }
 @layer composition {
   @include meta.load-css("./composition/");
@@ -14,4 +14,7 @@
 }
 @layer utility {
   @include meta.load-css("./utility/");
+}
+@layer overrides {
+  @include meta.load-css("./global/_motion_reduce.scss");
 }
